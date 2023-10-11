@@ -5,9 +5,8 @@ async function registerUser (username, email, password, photo) {
   try {
       const user = await db.query(
         `INSERT INTO users ("username", "email" , "password", "photo") VALUES ( $1, $2, $3, $4 )`,
-        [username, email, password, photo]
+        [username, email, password, photo ? photo : defaultUserImage]
       );
-      if (!user.photo) user.photo = defaultUserImage;
       return user;
   } catch (error) {
       return error;
