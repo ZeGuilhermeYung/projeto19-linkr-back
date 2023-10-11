@@ -1,11 +1,13 @@
 import db from "../database/db.js";
 
-async function registerUser (name, email, password, phone, city) {
+async function registerUser (username, email, password, photo) {
+  const defaultUserImage = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/768px-User-avatar.svg.png";
   try {
       const user = await db.query(
-        `INSERT INTO users ("name", "email" , "password", "phone", "city") VALUES ( $1, $2, $3, $4, $5 )`,
-        [name, email, password, phone, city]
+        `INSERT INTO users ("username", "email" , "password", "photo") VALUES ( $1, $2, $3, $4 )`,
+        [username, email, password, photo]
       );
+      if (!user.photo) user.photo = defaultUserImage;
       return user;
   } catch (error) {
       return error;

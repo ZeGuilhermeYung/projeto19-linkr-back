@@ -6,7 +6,7 @@ import validateSchema from "../middlewares/validate.schema.middlewares.js";
 
 const authRouter = Router();
 
-authRouter.post('/signup',validateSchema(userSchema), signUp);
-authRouter.post('/signin',validateSchema(authSchema), signIn);
+authRouter.post('/sign-up',validateSchema(userSchema), signUp);
+authRouter.post('/',validateSchema(authSchema), signIn);
 
 export default authRouter;
