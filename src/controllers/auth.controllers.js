@@ -1,18 +1,17 @@
 import { v4 as uuid } from 'uuid';
-import { validateEmail, validateUserRegister, registerUser } from '../repositories/auth.repositories.js';
+import { validateUserRegister, registerUser } from '../repositories/auth.repositories.js';
 import { registerUserSession, getUserbyEmail } from '../repositories/users.repositories.js';
 
 async function signUp (req, res) {
 
-    const { username, email, password, photo } = req.body;
+    const { username, email, password, photo } = res.locals.body;
 
     try {
-        const userRegistered = await validateEmail(email);
+        //const userRegistered = await validateEmail(email);
 
-        if (userRegistered) return res.status(409).send("Já existe um usuário cadastrado com este e-mail!");
+        //if (userRegistered) return res.status(409).send("Já existe um usuário cadastrado com este e-mail!");
 
         const newUser = await registerUser (username, email, password, photo);
-        console.log(newUser);
 
         if(newUser == null || newUser.message){
             return res.status(400).send(newUser.message);

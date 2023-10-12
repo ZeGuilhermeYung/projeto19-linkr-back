@@ -13,18 +13,6 @@ async function registerUser (username, email, password, photo) {
   };
 };
 
-async function validateEmail (email) {
-    try {
-        const userEmail = await db.query(
-          `SELECT * FROM users WHERE "email"=$1`,
-          [email]
-        );
-        return userEmail.rowCount > 0;
-    } catch (error) {
-        return null;
-    };
-};
-
 async function validateUserRegister (email, password) {
     try {
         const userInfo = await db.query(
@@ -38,4 +26,4 @@ async function validateUserRegister (email, password) {
     };
 };
 
-export { registerUser, validateEmail, validateUserRegister };
+export { registerUser, validateUserRegister };

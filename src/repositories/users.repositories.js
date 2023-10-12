@@ -14,7 +14,6 @@ async function getUserbyId (id) {
   };
 };
 
-
 async function getUserbyEmail (email) {
   try {
       const query = `SELECT * FROM users WHERE email=$1`;
