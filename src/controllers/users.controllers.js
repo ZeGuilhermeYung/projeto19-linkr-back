@@ -1,5 +1,5 @@
-import { getUserbyId } from "../repositories/users.repositories.js";
-import { findUserServices } from '../repositories/users.repositories.js';
+import { getUserbyId } from "../repositories/users.repository.js";
+import { findUserServices } from '../repositories/users.repository.js';
 
 async function getUser (req, res) {
   try {

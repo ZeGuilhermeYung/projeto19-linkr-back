@@ -1,33 +1,37 @@
 import { v4 as uuid } from 'uuid';
-import { validateUserRegister, registerUser } from '../repositories/auth.repositories.js';
-import { registerUserSession, getUserbyEmail } from '../repositories/users.repositories.js';
+import bcrypt from 'bcrypt';
+import { registerUserSession, getUserbyEmail } from '../repositories/users.repository.js';
+import { authRepository } from '../repositories/auth.repository.js';
 
 async function signUp (req, res) {
-
     const { username, email, password, photo } = res.locals.body;
 
     try {
-        //const userRegistered = await validateEmail(email);
+        const passwordHash = bcrypt.hashSync(password, 10);
 
-        //if (userRegistered) return res.status(409).send("Já existe um usuário cadastrado com este e-mail!");
+        await authRepository.signUpAuth(username, email, passwordHash, photo);
 
-        const newUser = await registerUser (username, email, password, photo);
-
-        if(newUser == null || newUser.message){
-            return res.status(400).send(newUser.message);
-       }
         return res.sendStatus(201);
     } catch (error) {
-        return res.status(500).send('Internal server error');
+        return res.status(500).send(error);
     };
 };
 
 async function signIn (req, res) {
     const { email, password } = req.body;
     try {
-        const existentUser = await validateUserRegister(email, password);
+        const userExists = await authRepository.emailRegistered(email, password);
 
-        if (!existentUser) return res.status(401).send("Usuário inexistente!");
+        if (!userExists) {
+            res.sendStatus(401);
+            return;
+        }
+
+        const isValidPassword = bcrypt.compareSync(password, userExists.password);
+        if (!isValidPassword) {
+            res.sendStatus(401);
+            return;
+        }
         
         const token = uuid();        
         const user = await getUserbyEmail(email);

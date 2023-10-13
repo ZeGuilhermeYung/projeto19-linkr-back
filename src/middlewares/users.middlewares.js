@@ -1,13 +1,15 @@
-import database from "../database/db.js";
+import { authRepository } from "../repositories/auth.repository.js";
 
-async function validateEmail(req, res, next) {
-  const { email } = res.locals.body;
+async function validateUser(req, res, next) {
+  const { email, photo } = res.locals.body;
+  const defaultUserImage = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/768px-User-avatar.svg.png";
+
+  if (!photo) res.locals.body.photo = defaultUserImage;
 
   try {
-    const userExist = (await database.query(
-      `SELECT * FROM users WHERE email = $1;`,
-      [email])).rows[0];
-    if (userExist) {
+    const emailExists = await authRepository.emailRegistered(email);
+
+    if (emailExists) {
       res.sendStatus(409);
       return;
     }
@@ -19,4 +21,4 @@ async function validateEmail(req, res, next) {
   }
 }
 
-export { validateEmail };
+export { validateUser };
