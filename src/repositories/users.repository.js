@@ -28,19 +28,6 @@ async function getUserbyEmail (email) {
   };
 };
 
-async function registerUserSession (user_id, token) {
-  try {
-      const session = await db.query(
-        `INSERT INTO sessions ("user_id", "token") VALUES ($1, $2)`,
-        [user_id, token]
-      );
-      return session;
-  } catch (error) {
-      console.log(error);
-      return null;
-  };
-};
-
 async function findUserServices(userId) {
   try {
       const query = `
@@ -95,4 +82,4 @@ async function findUserServices(userId) {
   }
 };
 
-export { getUserbyId, getUserbyEmail, registerUserSession, findUserServices };
+export { getUserbyId, getUserbyEmail, findUserServices };

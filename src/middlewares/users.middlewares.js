@@ -7,7 +7,7 @@ async function validateUser(req, res, next) {
   if (!photo) res.locals.body.photo = defaultUserImage;
 
   try {
-    const emailExists = await authRepository.emailRegistered(email);
+    const emailExists = await authRepository.userRegistered(email);
 
     if (emailExists) {
       res.sendStatus(409);

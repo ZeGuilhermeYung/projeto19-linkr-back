@@ -10,28 +10,22 @@ const query = `INSERT INTO sessions ("userId", token) VALUES ($1, $2);`;
   return db.query(query, [id, token]);
 }
 
-async function userRegistered(email) {
-  const query = `SELECT * FROM users WHERE email = $1;`;
-  return db.query(query, [email]);
-}
-
-async function emailRegistered(email) {
-  const query = `SELECT * FROM users WHERE email = $1;`;
-  const result = await db.query(query, [email]);
-  return result.rows[0];
-}
-
 async function sessionAuth(userId, token) {
   const query = `SELECT * FROM sessions WHERE "userId" = $1 AND token = $2;`;
   return db.query(query, [userId, token]);
 }
 
+async function userRegistered(email) {
+  const query = `SELECT * FROM users WHERE email = $1;`;
+  const result = await db.query(query, [email]);
+  return result.rows[0];
+}
+
 const authRepository = {
   signUpAuth,
-  userRegistered,
-  emailRegistered,
   signInAuth,
-  sessionAuth
+  sessionAuth,
+  userRegistered  
 };
 
 export { authRepository };
