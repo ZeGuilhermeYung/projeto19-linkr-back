@@ -18,15 +18,15 @@ async function signUp (req, res) {
 
 async function signIn (req, res) {
     try {
-        const userId = res.locals.userId;
+        const { userId, username, photo } = res.locals.user;
         
         const token = uuid();
 
         await authRepository.signInAuth(userId, token);
 
-        return res.status(200).send({ token });
+        return res.status(200).send({ token, username, photo });
     } catch (error) {
-        return res.status(500).send('Internal server error');
+        return res.status(500).send(error);
     };
 };
 
