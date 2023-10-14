@@ -7,7 +7,7 @@ const userSchema = joi.object({
     username: joi.string().required(),
     email: joi.string().pattern(emailRegex).required(),
     password: joi.string().required(),
-    photo: joi.string().pattern(photoRegex)
+    photo: joi.string().pattern(photoRegex).empty('')
 });
 
 export default userSchema;
