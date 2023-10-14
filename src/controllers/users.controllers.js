@@ -16,7 +16,7 @@ async function getUser (req, res) {
   };
 };
 
-async function getUserServices (req, res) {
+async function getUserServices (req, res) { ////trocar de services para posts
     try {
         const userServices = await findUserServices(Number(req.params.id));
         if(!userServices) return res.sendStatus(404);

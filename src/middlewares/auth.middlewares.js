@@ -6,20 +6,9 @@ async function validateAuth (req, res, next) {
   const token = authorization?.replace("Bearer ", "");
   const { email, password } = req.body;
   const user = await authRepository.userRegistered(email, password);
-
-  if (!user) {
-      res.sendStatus(401);
-      return;
-  }
-
-  if (!token) {
-    res.sendStatus(401);
-    return;
-  }
-
   const isValidPassword = bcrypt.compareSync(password, user.password);
   
-  if (!isValidPassword) {
+  if (!user || !token || !isValidPassword) {
       res.sendStatus(401);
       return;
   }
