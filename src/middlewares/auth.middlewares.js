@@ -4,7 +4,6 @@ import bcrypt from 'bcrypt';
 async function validateLogin (req, res, next) {
   const { email, password } = req.body;
   const user = await authRepository.userRegistered(email, password);
-  console.log(user);
 
   if (!user) {
     res.sendStatus(401);
