@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 
 async function validateLogin (req, res, next) {
   const { email, password } = req.body;
-  const user = await authRepository.userRegistered(email, password);
+  const user = await authRepository.userRegistered(email);
 
   if (!user) {
     res.sendStatus(401);
@@ -29,24 +29,21 @@ async function validateLogin (req, res, next) {
 async function validateAuth (req, res, next) {
   const { authorization } = req.headers;
   const token = authorization?.replace("Bearer ", "");
-  const { email, password } = req.body;
-  const user = await authRepository.userRegistered(email, password);
-  const isValidPassword = bcrypt.compareSync(password, user.password);
 
-  if (!user || !token || !isValidPassword) {
+  if (!token) {
       res.sendStatus(401);
       return;
   }
 
   try {
-    const session = await authRepository.sessionAuth(user.id, token);
+    const session = await authRepository.findSession(token);
 
     if (!session) {
       res.sendStatus(404);
       return;
     }
 
-    res.locals.userId = user.id;
+    res.locals.userId = session.userId;
     
     next();
 

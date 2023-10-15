@@ -15,6 +15,12 @@ async function sessionAuth(userId, token) {
   return db.query(query, [userId, token]);
 }
 
+async function findSession(token) {
+  const query = `SELECT * FROM sessions WHERE token = $1;`;
+  const result = await db.query(query, [token]);
+  return result.rows[0];
+}
+
 async function userRegistered(email) {
   const query = `SELECT * FROM users WHERE email = $1;`;
   const result = await db.query(query, [email]);
@@ -25,6 +31,7 @@ const authRepository = {
   signUpAuth,
   signInAuth,
   sessionAuth,
+  findSession,
   userRegistered  
 };
 
