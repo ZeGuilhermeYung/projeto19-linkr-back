@@ -7,4 +7,9 @@ const postsSchemas = joi.object({
   description: joi.string()
 });
 
-export default postsSchemas;
+const updatePostsSchemas = joi.object({
+  id: joi.number().required(),
+  description: joi.string()
+});
+
+export { postsSchemas, updatePostsSchemas };

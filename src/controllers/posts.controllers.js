@@ -1,7 +1,7 @@
 import { postsRepository } from "../repositories/posts.repository.js";
 
 async function createPost (req, res) {
-    const { url, description } = req.body;
+    const { url, description } = res.locals.body;
     const { userId } = res.locals;
 
     try {
@@ -13,4 +13,28 @@ async function createPost (req, res) {
     };
 };
 
-export { createPost };
+async function changePost (req, res) {
+    const { id, description } = res.locals.body;
+
+    try {
+        await postsRepository.updatePost(id, description);
+
+        return res.sendStatus(201);
+    } catch (error) {
+        return res.status(500).send(error);
+    };
+};
+
+async function removePost (req, res) {
+    const { id } = res.locals.body;
+
+    try {
+        await postsRepository.deletePost(id);
+
+        return res.sendStatus(201);
+    } catch (error) {
+        return res.status(500).send(error);
+    };
+};
+
+export { createPost, changePost, removePost };
