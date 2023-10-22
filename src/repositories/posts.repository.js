@@ -1,13 +1,25 @@
 import db from "../database/db.js";
 
+const findPosts =`SELECT
+  p.id,
+  p.url,
+  p.description,
+  p."userId",
+  p.likes,
+  u.username,
+  u.photo
+  FROM posts p
+  JOIN users u ON p."userId" = u.id`;
+
 async function insertPost(url, description, userId) {
   const query = `INSERT INTO posts (url, description , "userId") VALUES ( $1, $2, $3 );`;
   return db.query(query, [url, description, userId]);
 }
 
-async function getPosts(userId, url, description) {
-  const query = `SELECT * FROM posts ORDER BY id DESC LIMIT 20;`;
-  return db.query(query, [userId, url, description]);
+async function getPosts() {
+  const query = `${findPosts} ORDER BY id DESC LIMIT 20;`;
+  const result = await db.query(query);
+  return result.rows;
 }
 
 async function deletePost(id) {
@@ -20,17 +32,11 @@ async function updatePost(id, description) {
   return db.query(query, [id, description]);
 }
 
-async function userRegistered(email) {
-  const query = `SELECT * FROM users WHERE email = $1;`;
-  const result = await db.query(query, [email]);
-  return result.rows[0];
-}
-
 const postsRepository = {
   insertPost,
   getPosts, 
   deletePost,
-  updatePost
+  updatePost,
 };
 
 export { postsRepository };

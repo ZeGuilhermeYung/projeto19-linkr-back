@@ -37,4 +37,14 @@ async function removePost (req, res) {
     };
 };
 
-export { createPost, changePost, removePost };
+async function getAllPosts (req, res) {
+    try {
+        const posts = await postsRepository.getPosts();
+
+        return res.status(201).send(posts);
+    } catch (error) {
+        return res.status(500).send(error);
+    };
+};
+
+export { createPost, changePost, removePost, getAllPosts };
