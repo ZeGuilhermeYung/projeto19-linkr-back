@@ -38,10 +38,12 @@ async function removePost (req, res) {
 };
 
 async function getAllPosts (req, res) {
+    const myUserId = res.locals.userId;
+
     try {
         const posts = await postsRepository.getPosts();
 
-        return res.status(201).send(posts);
+        return res.status(201).send({ posts, myUserId });
     } catch (error) {
         return res.status(500).send(error);
     };

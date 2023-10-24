@@ -4,7 +4,7 @@ const findPosts =`SELECT
   p.id,
   p.url,
   p.description,
-  p."userId",
+  p."userId" AS "authorId",
   p.likes,
   u.username,
   u.photo
